@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 // using EZCameraShake;
@@ -15,16 +16,49 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody2D rigidbody2d;
     public float speed;
+    public float baseSpeed;
+    public float sprint;
+
+
+
+
     public GameObject Gamewonpanel;
     public GameObject Gamepausepanel;
     public GameObject Gamelostpanel;
 
+
     // private bool IsGamewon = false;
     // private bool IsGamelost = false;
+
+    void Start()
+    {
+
+        speed=baseSpeed;
+
+    }
 
 
     void Update()
     {
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Debug.Log("Player stop");
+            // rigidbody2d.velocity = new Vector2(0f,0f);
+            speed=0f;
+
+       
+        }
+
+
+                if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = baseSpeed + sprint;
+        }
+        else
+        {
+            speed = baseSpeed;
+        }
 
         // if(IsGamewon == true || IsGamelost == true)
         // {
@@ -61,6 +95,8 @@ public class PlayerController : MonoBehaviour
             Gamepausepanel.SetActive(true);
         
         }
+
+
       
        } 
 
@@ -78,6 +114,7 @@ public class PlayerController : MonoBehaviour
             Gamewonpanel.SetActive(true);
             // IsGamewon=true;
             speed = 0f;
+            baseSpeed= 0f;
         }
 
             if(other.tag=="Enemy")
@@ -86,6 +123,7 @@ public class PlayerController : MonoBehaviour
             Gamelostpanel.SetActive(true);
             // IsGamelost=true;
             speed = 0f;
+            baseSpeed= 0f;
             // CameraShaker.Instance.ShakeOnce(4f,4f,0.1f,1f);
         }
        
